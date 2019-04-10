@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {storage} from '../firebase';
+
+
 class ImageUpload extends Component {
     constructor(props){
         super(props);
         this.state = {
             image: null,
-            url:''
+            url: null
          }
         this.handleChange = this.handleChange.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
@@ -18,7 +20,7 @@ class ImageUpload extends Component {
     }
     handleUpload =()=>{
         const {image}= this.state;
-        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+       const uploadTask = storage.ref(`images/${image.name}`).put(image);
         uploadTask.on('state_changed',
         (snapshot)=>{
             // progress function
@@ -31,6 +33,7 @@ class ImageUpload extends Component {
              // complete function
              storage.ref('images').child(image.name).getDownloadURL().then(url => {
                 console.log(url);
+                this.setState({url});
              })
          });
     }
@@ -42,10 +45,17 @@ class ImageUpload extends Component {
             alignItems: 'center',
             justifyContent: 'center'
         };
+        const fileAttached = this.state.url;
         return (
             <div style={style}>
                 <input type="file" onChange={this.handleChange}/>
                 <button onClick={this.handleUpload}>Upload</button>
+                <br/>
+                {fileAttached ? (
+                <img src={this.state.url}
+                    alt="File Uploaded" height="300"width="400" />
+                    ): (
+                        <img src="" alt="No file uploaded"/>)}
             </div>
          )
     }
