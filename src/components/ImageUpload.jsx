@@ -53,11 +53,16 @@ class ImageUpload extends Component {
             alignItems: 'center',
             justifyContent: 'center'
         };
-       // const fileAttached = this.state.url;
+       const fileAttached = this.state.file;
         return (
             <div style={style}>
             <input type="file" onChange={this.handleChange}/>
-            <img src={this.state.file}alt="File Uploaded" height="300"width="400"/>
+            {fileAttached ?(    
+                <img src={this.state.file} alt="File Uploaded" height="300"width="400"/>) : 
+                (
+                        <img src="" alt="No file uploaded"/>)
+                }
+            
                 {/* <input type="file" onChange={this.handleChange}/>
 
                 <button onClick={this.handleUpload}>Upload</button>
